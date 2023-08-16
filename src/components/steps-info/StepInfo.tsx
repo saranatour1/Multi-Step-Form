@@ -1,3 +1,4 @@
+import type { PropFunction} from "@builder.io/qwik";
 import { component$, useSignal} from "@builder.io/qwik";
 import NavigateBtns from "../navigate-btns/NavigateBtns";
 
@@ -34,6 +35,7 @@ interface ParentProps {
   };
   active: number;
   stepLength: number;
+  addStep$: PropFunction<() => void>;
 }
 
 interface PlanOption {
@@ -46,7 +48,7 @@ interface PlanOption {
 }
 
 export const StepInfo = component$<ParentProps>(
-  ({ stepsDetails, active, stepLength }) => {
+  ({ stepsDetails, active, stepLength , addStep$ }) => {
     /** Step 2 */
     const isMonthly = useSignal(true);
     const isYearly = useSignal(false);
@@ -105,7 +107,7 @@ export const StepInfo = component$<ParentProps>(
             )}
           </div>
 
-          <NavigateBtns active={active} stepLength={stepLength} />
+          <NavigateBtns active={active} stepLength={stepLength} addStep$={addStep$} />
         </div> }
 
       </div>

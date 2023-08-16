@@ -1,31 +1,41 @@
-import { component$, useSignal, useTask$, $ } from '@builder.io/qwik';
+import type { PropFunction} from '@builder.io/qwik';
+import { component$, useSignal, $ } from '@builder.io/qwik';
 
 interface ParentProps{
   active:number;
   stepLength:number;
+  addStep$: PropFunction<() => void>;
 }
 
 
-export default component$<ParentProps>(({active ,stepLength }) => {
-  console.log(active)
-  // Variables to define if the current active step has a back button, or Next button, or there is successfull Operations
-  const isNext = useSignal(false);
+export default component$<ParentProps>(({active , stepLength , addStep$}) => {
+
+  /**
+   * The first time we are on the form, the next button will be there so this is why it is now set to true
+   */
+  const isNext = useSignal(true);
   const isBack = useSignal(false);
 
-  const endSuccess = useSignal(active===stepLength);
+  const endSuccess = useSignal(false);
 
-  useTask$(({ track }) => {
-    // track changes in store.count
-    track(() => endSuccess.value);
 
-  });
+  console.log((stepLength-active)-1)
 
-  const skipToSubmit =$(()=>{})
+
+
+  const skipToSubmit =$(()=>{
+    
+  })
 
 
   const previousPageBtn = $(()=>{})
 
-  const nextPageBtn = $(()=>{})
+  const nextPageBtn = $(()=>{
+    if( (stepLength - active)-1 !==0 ){
+      addStep$
+    }
+    console.log('I did something!!!')
+  })
 
 
   // console.log(endSuccess.value)
@@ -53,7 +63,7 @@ export default component$<ParentProps>(({active ,stepLength }) => {
             class={`px-4 py-3 bg-primary-marine-blue rounded-lg text-white ${
               isBack.value ? 'ml-auto' : 'self-end justify-self-end'
             }`}
-            onClick$={() => nextPageBtn()}
+            onClick$={() =>  addStep$()}
           >
             Next Step
           </button>
