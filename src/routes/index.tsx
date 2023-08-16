@@ -8,7 +8,7 @@ import { steps, stepsDetails } from "~/constants/step";
 
 
 export default component$(() => {
-  const currentActiveStep = useSignal(3);
+  const currentActiveStep = useSignal(0);
   const userGatheredInformation= useStore({steps:[],total:0});
   // console.log(stepsDetails[currentActiveStep.value])
   const currentStep= useStore(stepsDetails[currentActiveStep.value]);
