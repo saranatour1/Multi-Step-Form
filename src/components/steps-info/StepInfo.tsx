@@ -36,6 +36,7 @@ interface ParentProps {
   active: number;
   stepLength: number;
   addStep$: PropFunction<() => void>;
+  backBtn$:PropFunction<()=> void>;
 }
 
 interface PlanOption {
@@ -48,7 +49,7 @@ interface PlanOption {
 }
 
 export const StepInfo = component$<ParentProps>(
-  ({ stepsDetails, active, stepLength , addStep$ }) => {
+  ({ stepsDetails, active, stepLength , addStep$ , backBtn$ }) => {
     /** Step 2 */
     const isMonthly = useSignal(true);
     const isYearly = useSignal(false);
@@ -65,10 +66,11 @@ export const StepInfo = component$<ParentProps>(
       total: 10,
     });
     const planOptions: PlanOption[] = stepsDetails.planOptions ?? [];
-    console.log(isChecked.value);
+    console.log(stepsDetails);
     return (
       <div class="flex-1  h-full">
-        {isConfirmed.value ? <Success />:        <div class="p-16 flex flex-col h-full w-full gap-4 justify-normal">
+        {isConfirmed.value ? <Success />:        
+        <div class="p-16 flex flex-col h-full w-full gap-4 justify-normal">
           <Title
             stepHeading={stepsDetails.name}
             stepGuide={stepsDetails.stepGuide}
@@ -84,7 +86,7 @@ export const StepInfo = component$<ParentProps>(
                   <StepTwo planOptions={planOptions}/>
                 </div>
               ) : active === 2 ? (
-                <div class="flex flex-col justify-between w-full h-64">
+                <div class="flex flex-col justify-between w-full h-64" key={index}>
                   {stepsDetails.services &&
                     stepsDetails.services.map((item, idx) => (
                       <div
@@ -96,7 +98,7 @@ export const StepInfo = component$<ParentProps>(
                     ))}
                 </div>
               ) : active === 3 ? (
-                <div class="w-full h-60 ">
+                <div class="w-full h-60 " key={index}>
                   {Object.entries(gatheredInfo.value).length > 0 && (
                     <StepFour planType={gatheredInfo.value.planType} isMonthly={isMonthly.value} total={gatheredInfo.value.total} addons={gatheredInfo.value.addons} price={gatheredInfo.value.price}/>
                   )}
@@ -107,7 +109,7 @@ export const StepInfo = component$<ParentProps>(
             )}
           </div>
 
-          <NavigateBtns active={active} stepLength={stepLength} addStep$={addStep$} />
+          <NavigateBtns active={active} stepLength={stepLength} addStep$={addStep$} backBtn$={backBtn$} />
         </div> }
 
       </div>
