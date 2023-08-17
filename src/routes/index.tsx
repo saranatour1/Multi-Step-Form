@@ -65,8 +65,18 @@ export default component$(() => {
   })
 
   const setAddOns$ =$((service:string,price:number)=>{
-    userInformation.value.addOns.push([service,price])
-    console.log(userInformation.value.addOns)
+    let newSet = new Map();
+    if(newSet.has(service))
+    {
+      newSet.delete(service)
+      userInformation.value.addOns.filter((item)=> item !==service)
+
+    }else{
+
+      userInformation.value.addOns.push([service,price])
+      newSet.set(service,price);
+    }
+    console.log(newSet)
   })
 
 // Logging user information with additional properties

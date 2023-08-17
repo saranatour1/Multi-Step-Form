@@ -1,4 +1,5 @@
-import { component$ } from '@builder.io/qwik';
+import type { PropFunction } from '@builder.io/qwik';
+import { component$, useSignal, $ } from '@builder.io/qwik';
 
 interface ParentProps{
    serviceName: string;
@@ -6,14 +7,24 @@ interface ParentProps{
     price: number | any;
     key:number;
     isMonthly:boolean;
+    addItemToSet$: PropFunction<(service: string, price: number) => void>;
 }
 
-export const CheckBox = component$<ParentProps>(({key, serviceName, serviceCaption,price , isMonthly}) => {
+export const CheckBox = component$<ParentProps>(({key, serviceName, serviceCaption,price , isMonthly ,addItemToSet$}) => {
   console.log(isMonthly)
+
+  const isChecked = useSignal(false);
+  const toggleService =$((service:string,price:number)=>{
+    addItemToSet$(service,price)
+  })
+
+
   return (
     <div
-    class={`w-full h-2/6 border p-4 flex justify-normal items-center my-1 rounded-lg hover:border-primary-purplish-blue hover:cursor-pointer`}
+    class={`w-full h-2/6 border p-4 flex justify-normal items-center my-1 rounded-lg hover:border-primary-purplish-blue hover:cursor-pointer ${isChecked.value && 'border-primary-purplish-blue'}`}
     key={key}
+    role='button'
+    onClick$={()=> isChecked.value=!isChecked.value}
   >
     <div class="mx-4">
       <input
@@ -21,9 +32,8 @@ export const CheckBox = component$<ParentProps>(({key, serviceName, serviceCapti
         class="checked:bg-primary-purplish-blue w-4 h-4 border-nuetral-light-gray rounded-sm"
         name={serviceName}
         id={serviceName}
-
-        // checked={} // Check if the service is selected
-        // onChange$={() => toggleService(serviceName)} // Toggle the service when checkbox is clicked
+        checked={isChecked.value} // Check if the service is selected
+        onChange$={() => toggleService(serviceName ,isMonthly ? Number(price) : Number(price) * 10)} // Toggle the service when checkbox is clicked
       />
     </div>
     <hgroup class="mx-4 p-0 flex flex-col items-start justify-center w-1/2 justify-self-start">
