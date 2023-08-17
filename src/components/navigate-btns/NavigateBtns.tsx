@@ -9,7 +9,7 @@ interface ParentProps{
 }
 
 
-export default component$<ParentProps>(({active , stepLength , addStep$ , backBtn$}) => {
+export default component$<ParentProps>(({active , stepLength , addStep$ , backBtn$ }) => {
 
   /**
    * The first time we are on the form, the next button will be there so this is why it is now set to true
@@ -26,7 +26,7 @@ export default component$<ParentProps>(({active , stepLength , addStep$ , backBt
   useTask$(({ track}) => {
     // rerun this function  when `value` property changes.
     track(() => active);
-    if(active!==0){
+    if(active!==0 || active === stepLength-1){
       isBack.value =true;
     }else{
       isBack.value =false;
@@ -35,6 +35,7 @@ export default component$<ParentProps>(({active , stepLength , addStep$ , backBt
     if(active ===stepLength-1){
       isNext.value=false;
       endSuccess.value=true;
+      isBack.value=true;
     }
 
   });
@@ -56,7 +57,7 @@ export default component$<ParentProps>(({active , stepLength , addStep$ , backBt
 
   const nextPageBtn = $(()=>{
     if( (stepLength - active)-1 !==0 ){
-      addStep$
+      addStep$()
     }
     console.log('I did something!!!')
   })
@@ -67,7 +68,7 @@ export default component$<ParentProps>(({active , stepLength , addStep$ , backBt
     <div class=" justify-end mt-auto ">
       <div class="flex items-center justify-between">
         {endSuccess.value ? 
-          <button class='px-4 py-3 bg-primary-purplish-blue rounded-lg text-white'
+          <button class='px-4 py-3 bg-primary-purplish-blue rounded-lg text-white self-end ml-auto'
           preventdefault:click
           onClick$={(event) => skipToSubmit()}>
             Confirm
@@ -87,7 +88,9 @@ export default component$<ParentProps>(({active , stepLength , addStep$ , backBt
             class={`px-4 py-3 bg-primary-marine-blue rounded-lg text-white ${
               isBack.value ? 'ml-auto' : 'self-end justify-self-end'
             }`}
-            onClick$={ async() =>  await addStep$()}
+            onClick$={ async() =>  await nextPageBtn()}
+
+            
           >
             Next Step
           </button>

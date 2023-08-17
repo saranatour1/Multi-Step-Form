@@ -1,3 +1,4 @@
+import type { PropFunction } from "@builder.io/qwik";
 import { component$, useSignal,$ } from "@builder.io/qwik";
 import Arcade from "~/media/icon-arcade.svg";
 import Advanced from "~/media/icon-advanced.svg";
@@ -22,11 +23,13 @@ import Pro from "~/media/icon-pro.svg";
 
   interface ParentProps {
     planOptions: PlanOption[];
+    planTypePrice$: PropFunction<(planType:string,planPrice:number,isMonthly:boolean)=>void>;
+    
   }
 
-export const StepTwo = component$<ParentProps>(({planOptions}) => {
-  const isMonthly = useSignal(false);
-  const isYearly = useSignal(true);
+export const StepTwo = component$<ParentProps>(({planOptions , planTypePrice$}) => {
+  const isMonthly = useSignal(true);
+  const isYearly = useSignal(false);
   const isChecked = useSignal(false);
 
   const planCheck = useSignal(0);
@@ -41,10 +44,11 @@ export const StepTwo = component$<ParentProps>(({planOptions}) => {
 
   const handleOptionClick = $((index) => {
     planCheck.value = index === planCheck.value ? null : index;
-    console.log(planCheck.value);
+    console.log(isMonthly.value)
   });
 
 
+  planTypePrice$(planOptions[planCheck.value].name,isMonthly.value ? planOptions[planCheck.value].price.monthly:planOptions[planCheck.value].price.monthly*10 ,isMonthly.value);
 
   return (
     <>
@@ -86,7 +90,7 @@ export const StepTwo = component$<ParentProps>(({planOptions}) => {
       </div>
 
       <div class="flex justify-center items-center w-full h-16 border p-2 mt-3 rounded-lg bg-nuetral-magnolia">
-        <span class={`mr-3 ${!isChecked.value && "text-primary-marine-blue"}`}>
+        <span class={`mr-3 ${isMonthly.value && "text-primary-marine-blue"}`}>
           Monthly
         </span>
         <label class="relative inline-flex items-center cursor-pointer">

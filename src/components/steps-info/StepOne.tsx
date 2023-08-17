@@ -1,4 +1,5 @@
-import { component$, useStore ,$, useSignal } from "@builder.io/qwik";
+import { component$, useStore ,$, useSignal, PropFunction, useTask$ } from "@builder.io/qwik";
+import { userInfo } from "os";
 
 
 /**
@@ -11,37 +12,41 @@ import { component$, useStore ,$, useSignal } from "@builder.io/qwik";
 interface ParentProps {
   info: string;
   index: number;
+  personalInformation$: PropFunction<(text:string,index:number) => void>
 }
 
-export const StepOne = component$<ParentProps>(({ info, index }) => {
+export const StepOne = component$<ParentProps>(({ info, index , personalInformation$ }) => {
   
-  const userInformation = useStore({name:'', email:'',number:""})
+  const userInformation = useSignal({name:'', email:'',number:""})
+
+
 
   const errors = useStore({isError:false, errorMsg:''});
 
+  // useTask$(({ track}) => {
+  //   // rerun this function  when `value` property changes.
+  //   track(() => userInformation.value);
+
+  //   personalInformation$(name.value,email.value,number.value);
+  // });
+
   
   const validateData = $((text:string , index:number) => {
-    const emailRegEx = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
-    const nameRegEx =/^[a-zA-Z\s]+$/;
-    const phoneRegEx = /^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\s\./0-9]*$/;
-    if(!emailRegEx.test(text) || !nameRegEx.test(text) || !phoneRegEx.test(text)){
-      errors.isError = true;
-      errors.errorMsg='Invalid Input';
-    }else{
-      errors.isError = false; 
-    }
-
     if(!errors.isError){
+      personalInformation$(text,index)
+      if(index===0){
+        userInformation.value.name =text;
+      } 
       if(index===1){
-        userInformation.name = text;
-      }else if(index===2){
-        userInformation.email = text;
-      }else{
-        userInformation.number = text;
+        userInformation.value.email = text;
       }
-
+      if(index===2){
+        userInformation.value.number = text;
+      }
     }
   })
+
+  // console.log(userInformation.value.name,userInformation.value.email , userInformation.value.number)
 
   const errorValidate=$(( text:string )=>{
     if(text.length ===0 || !text){

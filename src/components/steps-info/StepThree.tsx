@@ -1,40 +1,46 @@
-import { component$ } from "@builder.io/qwik";
+import type { PropFunction } from "@builder.io/qwik";
+import { component$, useSignal, $ } from '@builder.io/qwik';
+import { CheckBox } from "./checkBox";
 
-interface ParentProps{
-  serviceName: string;
-  serviceCaption:string;
-  price: number | any;
+
+interface ParentProps {
+  services: {
+    serviceName: string;
+    serviceCaption: string;
+    price: number | any;
+  }[];
   isMonthly: boolean;
-
+  key: number;
+  setAddOns$: PropFunction<(service: string, price: number) => void>;
 }
 
-export const StepThree = component$<ParentProps>(({serviceName ,serviceCaption , price , isMonthly}) => {
-  return (
-    <>
-      <div class="mx-4">
-        <input
-          type="checkbox"
-          class=" checked:bg-primary-purplish-blue w-4 h-4  border-nuetral-light-gray rounded-sm"
-          name={serviceName}
-          id={serviceName}
-        />
-      </div>
-      <hgroup class="mx-4 p-0 flex flex-col items-start justify-center w-1/2 justify-self-start">
-        <h4 class=" text-left text-md font-c-bold text-primary-marine-blue">
-          {serviceName}
-        </h4>
-        <p class=" text-left text-nuetral-cool-gray text-sm">
-          {serviceCaption}
-        </p>
-      </hgroup>
+export const StepThree = component$<ParentProps>(({ services, isMonthly, key, setAddOns$ }) => {
+  // Create a Set to store selected services
+  const selectedServices = useSignal(new Set());
 
-      <div class=" text-left ml-auto">
-        {
-          <p class=" text-left text-primary-purplish-blue">
-            +${price} {isMonthly ? "/mo" : "/yr"}{" "}
-          </p>
-        }
-      </div>
-    </>
+  // // Function to handle adding/removing services
+  // const toggleService = $(serviceName => {
+
+  //   if (selectedServices.value.has(serviceName)) {
+  //     // If service is already selected, remove it
+  //     selectedServices.value.delete(serviceName);
+
+  //   } else {
+  //     // If service is not selected, add it
+  //     selectedServices.value.add(serviceName);
+  //     let item = services.filter((item)=> item.serviceName===serviceName).map((item)=>item.price);
+  //     setAddOns$(serviceName, item[0])
+  //   }
+  //   // Update the list of selected services
+  //   // setAddOns$(Array.from(selectedServices.value), isMonthly);
+  //   console.log(selectedServices.value)
+  // });
+
+  return (
+    <div class="flex flex-col justify-between w-full h-64" key={key}>
+      {services.map((item, idx) => (
+        <CheckBox isMonthly={isMonthly} key={idx} serviceName={item.serviceName} serviceCaption={item.serviceCaption} price={item.price}/>
+      ))}
+    </div>
   );
 });
