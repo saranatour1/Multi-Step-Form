@@ -1,6 +1,6 @@
 import { component$, useSignal, $, useTask$ } from '@builder.io/qwik';
 import type { DocumentHead } from '@builder.io/qwik-city';
-import { userInfo } from 'os';
+
 
 
 import { StepInfo } from "~/components/steps-info/StepInfo";
@@ -40,6 +40,8 @@ export default component$(() => {
     }
   })
 
+
+
   /**
    * Step one Information: name, email, mobile
    * 
@@ -64,20 +66,11 @@ export default component$(() => {
     userInformation.value.total = userInformation.value.planPrice;
   })
 
-  const setAddOns$ =$((service:string,price:number)=>{
-    let newSet = new Map();
-    if(newSet.has(service))
-    {
-      newSet.delete(service)
-      userInformation.value.addOns.filter((item)=> item !==service)
-
-    }else{
-
-      userInformation.value.addOns.push([service,price])
-      newSet.set(service,price);
-    }
-    console.log(newSet)
+  const setAddOns$ =$((service:string ,price:number)=>{
+    // Something is wrong here
+    
   })
+  console.log(userInformation.value.addOns)
 
 // Logging user information with additional properties
 console.log(
@@ -91,6 +84,9 @@ console.log(
   Add ons? : ${userInformation.value.addOns}
   total:${userInformation.value.total}`
 );
+
+
+
 
   return (
     <>

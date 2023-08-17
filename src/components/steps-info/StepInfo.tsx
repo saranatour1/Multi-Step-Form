@@ -1,5 +1,5 @@
 import type { PropFunction } from "@builder.io/qwik";
-import { component$, useSignal} from "@builder.io/qwik";
+import { component$, useSignal, $ } from '@builder.io/qwik';
 import NavigateBtns from "../navigate-btns/NavigateBtns";
 
 import { Title } from "./Title";
@@ -16,7 +16,7 @@ interface userStore{
   planType: string;
   planPrice:string;
   isMonthly:boolean;
-  addOns:(string)[];
+  addOns:(string|number)[][];
   total:number;
 }
 
@@ -71,6 +71,10 @@ export const StepInfo = component$<ParentProps>(
     const isConfirmed = useSignal(false);
     const planOptions: PlanOption[] = stepsDetails.planOptions ?? [];
 
+    const submitThis$ = $(()=>{
+      isConfirmed.value=!isConfirmed.value;
+    })
+
     console.log(store.isMonthly)
     return (
       <div class="flex-1  h-full">
@@ -121,6 +125,7 @@ export const StepInfo = component$<ParentProps>(
               stepLength={stepLength}
               addStep$={addStep$}
               backBtn$={backBtn$}
+              submitThis$={submitThis$}
 
             />
           </div>

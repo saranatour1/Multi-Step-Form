@@ -1,5 +1,5 @@
 import type { PropFunction } from '@builder.io/qwik';
-import { component$, useSignal, $ } from '@builder.io/qwik';
+import { component$, useSignal, $, useTask$ } from '@builder.io/qwik';
 
 interface ParentProps{
    serviceName: string;
@@ -11,12 +11,23 @@ interface ParentProps{
 }
 
 export const CheckBox = component$<ParentProps>(({key, serviceName, serviceCaption,price , isMonthly ,addItemToSet$}) => {
-  console.log(isMonthly)
+
 
   const isChecked = useSignal(false);
-  const toggleService =$((service:string,price:number)=>{
+
+  const testVal= useSignal([{}]);
+
+  const toggleService$ =$((service:string,price:number)=>{
+    console.log(service,price)
+    testVal.value.push({service:service, price:price});
     addItemToSet$(service,price)
   })
+
+  useTask$(({ track}) => {
+    // rerun this function  when `value` property changes.
+    track(() => isChecked.value);
+    console.log("hi I am checked" ,testVal.value)
+  });
 
 
   return (
@@ -33,7 +44,8 @@ export const CheckBox = component$<ParentProps>(({key, serviceName, serviceCapti
         name={serviceName}
         id={serviceName}
         checked={isChecked.value} // Check if the service is selected
-        onChange$={() => toggleService(serviceName ,isMonthly ? Number(price) : Number(price) * 10)} // Toggle the service when checkbox is clicked
+
+        onChange$={() => toggleService$(serviceName ,isMonthly ? Number(price) : Number(price) * 10)} // Toggle the service when checkbox is clicked
       />
     </div>
     <hgroup class="mx-4 p-0 flex flex-col items-start justify-center w-1/2 justify-self-start">

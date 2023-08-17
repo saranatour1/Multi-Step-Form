@@ -6,10 +6,11 @@ interface ParentProps{
   stepLength:number;
   addStep$: PropFunction<() => void>;
   backBtn$: PropFunction<() => void>;
+  submitThis$: PropFunction<() => void>;
 }
 
 
-export default component$<ParentProps>(({active , stepLength , addStep$ , backBtn$ }) => {
+export default component$<ParentProps>(({active , stepLength , addStep$ , backBtn$,submitThis$ }) => {
 
   /**
    * The first time we are on the form, the next button will be there so this is why it is now set to true
@@ -42,7 +43,7 @@ export default component$<ParentProps>(({active , stepLength , addStep$ , backBt
   
 
   const skipToSubmit =$(()=>{
-    
+    submitThis$()
   })
 
 

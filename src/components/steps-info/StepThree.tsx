@@ -18,11 +18,9 @@ export const StepThree = component$<ParentProps>(
     // Create a Set to store selected services
 
 
-    const addItemToSet$ = $((service:string, price:number) => {
+    const addItemToSet$ = $(async(service:string, price:number) => {
 
-        setAddOns$(service,price)
-
-
+       await setAddOns$(service,price)
     });
 
     return (
