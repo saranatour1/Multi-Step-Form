@@ -94,15 +94,15 @@ console.log(
         <div class="flex items-center justify-around gap-6 w-full h-full max-xs:flex-col max-xs:gap-3">
           <Steps steps={steps} active={currentActiveStep.value}/>
           <StepInfo 
-          stepsDetails={currentStep.value}
-          active={currentActiveStep.value} 
-          stepLength={stepLength} 
-          addStep$={addStep$} 
-          backBtn$={backBtn$}  
-          store={userInformation.value}
-          personalInformation$={personalInformation$}
-          planTypePrice$={planTypePrice$}
-          setAddOns$={setAddOns$}
+            stepsDetails={currentStep.value}
+            active={currentActiveStep.value} 
+            stepLength={stepLength} 
+            addStep$={addStep$} 
+            backBtn$={backBtn$}  
+            store={userInformation.value}
+            personalInformation$={personalInformation$}
+            planTypePrice$={planTypePrice$}
+            setAddOns$={setAddOns$}
           />
         </div>
       </section>

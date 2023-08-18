@@ -9,12 +9,12 @@ interface ParentProps {
 export const Steps = component$<ParentProps>(({ steps, active }) => {
 
   return (
-    <div class={`w-3/12  h-full bg-desktop-image rounded-lg`}>
-      <div class="flex flex-col p-4 h-2/4 justify-between items-center mt-5">
+    <div class={`w-3/12  h-full bg-desktop-image max-xs:bg-mobile-image rounded-lg max-xs:bg-no-repeat max-xs:w-screen max-xs:pt-10 max-xs:bg-cover max-xs:mt-32`}>
+      <div class="flex xl:flex-col p-4 h-2/4 justify-between items-center mt-5 max-xs:flex ">
         {steps.map((item, idx) => (
           <div
             key={idx}
-            class={"flex w-full justify-normal gap-4 items-center"}
+            class={"flex w-full justify-normal gap-4 items-center "}
           >
             <p
               class={`rounded-full w-10 h-10 ${
@@ -32,7 +32,7 @@ export const Steps = component$<ParentProps>(({ steps, active }) => {
               </span>
             </p>
 
-            <div class="w-full h-full">
+            <div class="w-full h-full max-xs:hidden">
               <p class="text-nuetral-cool-gray  uppercase pb-1">{item.name}</p>
               <p class=" text-md uppercase font-c-semi-bold text-nuetral-alabaster">
                 {item.info}

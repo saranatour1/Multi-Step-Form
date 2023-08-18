@@ -77,11 +77,11 @@ export const StepInfo = component$<ParentProps>(
 
     console.log(store.isMonthly)
     return (
-      <div class="flex-1  h-full">
+      <div class="flex-1  h-full my-5">
         {isConfirmed.value ? (
           <Success />
         ) : (
-          <div class="p-16 flex flex-col h-full w-full gap-4 justify-normal">
+          <div class="p-16 flex flex-col h-full w-full gap-4 justify-normal max-xs:z-50 max-xs:h-1/2">
             <Title
               stepHeading={stepsDetails.name}
               stepGuide={stepsDetails.stepGuide}
