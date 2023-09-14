@@ -42,7 +42,7 @@ export const StepTwo = component$<ParentProps>(({planOptions , planTypePrice$}) 
     isMonthly.value = !isChecked.value;
   });
 
-  const handleOptionClick = $((index) => {
+  const handleOptionClick = $((index:any) => {
     planCheck.value = index === planCheck.value ? null : index;
     console.log(isMonthly.value)
   });
